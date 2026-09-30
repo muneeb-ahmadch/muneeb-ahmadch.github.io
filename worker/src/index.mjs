@@ -2,7 +2,7 @@
 // Every path that fails ends in one of two safe places: a fixed reply, or my notes verbatim.
 import INDEX from '../../kb/index.json';
 import VECS from '../../kb/index.bin';
-import { ruleGate, knnGate, REPLIES, isFollowup } from '../../shared/gate.mjs';
+import { ruleGate, smallTalk, knnGate, REPLIES, isFollowup } from '../../shared/gate.mjs';
 import { makeRetriever, dot } from '../../shared/retrieve.mjs';
 import { verifyAnswer, extractive, questionFit } from '../../shared/verify.mjs';
 import { buildMessages, parseModelJson, CATEGORIES } from '../../shared/prompt.mjs';
@@ -106,6 +106,9 @@ async function handleAsk(req, env, emit) {
   const rule = ruleGate(q);
   emit({ t: 'stage', stage: 'rules', status: rule ? 'declined' : 'ok', detail: rule?.cat });
   if (rule) return final('declined', { cat: rule.cat, by: 'rules', reply: REPLIES[rule.cat] });
+  // Greetings, thanks and "ok": one fixed reply each, no model, never part of the conversation history.
+  const talk = smallTalk(q);
+  if (talk) return final('hello', { cat: talk, reply: REPLIES[talk] });
 
   // 3. Earlier turns are used only if they carry this Worker's signature (the client cannot rewrite them).
   const history = [];
@@ -116,13 +119,15 @@ async function handleAsk(req, env, emit) {
       if ((await hmac(env.MAC_KEY, h.q + '\n' + h.a)) === h.mac && !ruleGate(h.q)) history.push({ q: h.q, a: h.a });
     }
   }
-  const followup = history.length > 0 && isFollowup(q);
+  // A question my notes were written to answer is read on its own, so it gets the same answer whatever came before.
+  const exact = retriever.retrieve(q, { k: 1 })[0]?.intent >= 0.8;
+  const followup = history.length > 0 && !exact && isFollowup(q);
   const rq = followup ? `${history.at(-1).q} ${q}` : q;
 
   // 4. Topic gate: nearest labelled example questions, and how well my notes match at all.
   emit({ t: 'stage', stage: 'gate', status: 'run' });
   let qv, rv;
-  try { [qv, rv] = await embed(env, [q, rq]); } catch { return final('error', { reply: 'Something went wrong on my side. Try again in a moment.' }); }
+  try { [qv, rv] = await embed(env, followup ? [q, rq] : [q]); rv = rv || qv; } catch { return final('error', { reply: 'Something went wrong on my side. Try again in a moment.' }); }
   const cosChunks = cosTo(rv, 0, NC);
   const kbMax = Math.max(...cosChunks);
   const g = knnGate(cosTo(qv, NC, NE), EX, kbMax, { followup });
@@ -137,7 +142,7 @@ async function handleAsk(req, env, emit) {
   emit({ t: 'stage', stage: 'retrieve', status: 'ok', notes: top.map(c => ({ id: c.id, title: c.title })) });
   if (g.decision === 'unknown') return final('unknown', { reply: REPLIES.unknown, suggest: top.slice(0, 3).map(c => c.title) });
   // The question is one my notes were written to answer: the note itself is the best answer, and needs no model.
-  if (top[0].intent >= 0.8) return final('extractive', { sentences: extractive(top), reason: 'exact-match' });
+  if (exact && top[0].intent >= 0.8) return final('extractive', { sentences: extractive(top), reason: 'exact-match' });
 
   // 6. Quota: counts only turns that reach the model; any failure means no model, and my notes instead.
   emit({ t: 'stage', stage: 'quota', status: 'run' });
@@ -167,7 +172,8 @@ async function handleAsk(req, env, emit) {
 
   // 8. The writer: an open 8B model, temperature 0, sees only the retrieved notes.
   emit({ t: 'stage', stage: 'write', status: 'run' });
-  const nonce = crypto.randomUUID().slice(0, 8);
+  // The delimiter is secret (keyed hash) but fixed per question, so the same question gets the same prompt and answer.
+  const nonce = env.MAC_KEY ? (await hmac(env.MAC_KEY, 'delim\n' + q)).slice(0, 12) : crypto.randomUUID().slice(0, 12);
   const messages = buildMessages({ q, notes: top, history, nonce });
   let out = null;
   for (let attempt = 0; attempt < 2 && !out; attempt++) {

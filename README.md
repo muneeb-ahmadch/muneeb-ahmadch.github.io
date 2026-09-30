@@ -22,7 +22,7 @@ says so. Nothing a visitor types is stored.
 | Retrieval | Worker (browser for display and offline) | BM25 + cosine, reciprocal-rank fusion, exact-intent boost (`shared/retrieve.mjs`) |
 | Quota | Worker | one Durable Object: 700 model turns a day, 50 an hour, per-network caps; fails closed to notes only |
 | Injection classifier | Worker → Groq | Llama Prompt Guard 2 86M |
-| Writer | Workers AI | Llama 3.1 8B (fp8), temperature 0, sees only the retrieved notes in per-request delimiters |
+| Writer | Workers AI | Llama 3.1 8B (fp8), temperature 0, sees only the retrieved notes inside secret per-question delimiters (keyed hash of the question) |
 | Verifier | Worker | `shared/verify.mjs`: every number and name in the cited note, content words from that note, negation parity with the quote, no URL/email/phone/handle, no persona break. Otherwise the notes verbatim |
 
 The system prompt is not the guardrail. The verifier is, because in my own experiment 12 the guard I trusted

@@ -21,6 +21,10 @@ export const REPLIES = {
   // A nearest-neighbour decline can't tell "off-topic" from "a work question my notes don't cover", so its reply is
   // honest for both.
   notcovered: "That isn't in my notes, so I won't guess. I keep this chat to my work: my experiments, demos, method and what I offer.",
+  // Small talk gets one fixed reply each, so "hey" is answered the same way every time.
+  hello: "Hi! Ask me about my work: what I've measured, how I'd fix your support bot, or what I charge.",
+  thanks: "You're welcome. Ask me anything else about my work, or message the real me on Upwork.",
+  ack: "Ask me about my work: what I've measured, how I'd fix your support bot, or what I charge.",
 };
 
 const RULES = [
@@ -52,6 +56,29 @@ export function ruleGate(q) {
   const n = normalize(text);
   for (const [cat, re] of RULES) if (re.test(n)) return { decision: 'declined', cat, by: 'rule' };
   return null;
+}
+
+// Small talk: a message made only of greetings, thanks or acknowledgements (plus filler like "there" or a name).
+// Checked after ruleGate, so "hi, what's your email?" is still a contact decline. Never reaches the model.
+const SMALL = [
+  ['hello', /^(?:h+i+|h+e+l+o+|he+y+|heya|hiya|yo+|sup|wass?up|whats ?up|howdy|greetings|salaa?m|(?:as+)?salaa?m(?: ?[uo])? ?(?:wa ?)?[ao]?lai?kum|aoa|good (?:morning|afternoon|evening|day)|how are (?:you|u|things)(?: doing| today)?|how r u|hows it going|hows everything|anyone (?:there|home)|you there|test(?:ing)?)(?= |$)/],
+  ['thanks', /^(?:thank (?:you|u)|thanks?|thanx|thx|ty|cheers|much appreciated|appreciate (?:it|that)|good ?bye|bye+|see (?:you|ya)(?: later)?|cya|take care|thats (?:all|it)|have a (?:good|nice|great) (?:day|one))(?= |$)/],
+  ['ack', /^(?:ok(?:ay)?|k+|cool|nice|great|awesome|perfect|sounds good|all ?right|got it|lol|haha+|hmm+|wow|interesting|fine|sure|yes|yeah|yep|no|nope|oh|ah|i see)(?= |$)/],
+  ['', /^(?:there|muneeb|ahmad|clone|bot|buddy|bro|man|mate|sir|everyone|all|again|so much|very much|a lot|lots|then|and|dear|friend|today|guys|folks)(?= |$)/],
+];
+
+export function smallTalk(q) {
+  if (/[^\u0000-\u007f\u2018-\u201d]/u.test(String(q ?? '').replace(/\p{Extended_Pictographic}|\ufe0f/gu, ''))) return null;
+  let s = String(q ?? '').toLowerCase().replace(/[’']/g, '').replace(/[^a-z0-9 ]+/g, ' ').replace(/\s+/g, ' ').trim();
+  if (s.length > 80) return null;
+  const kinds = new Set();
+  while (s) {
+    const hit = SMALL.find(([, re]) => re.test(s));
+    if (!hit) return null;
+    if (hit[0]) kinds.add(hit[0]);
+    s = s.replace(hit[1], '').trim();
+  }
+  return kinds.has('thanks') ? 'thanks' : kinds.has('hello') ? 'hello' : 'ack';
 }
 
 // Nearest-neighbour gate over labelled example questions (Worker, embeddings).

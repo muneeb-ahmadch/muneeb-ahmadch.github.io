@@ -1,5 +1,5 @@
 import { CONFIG } from './config.js';
-import { ruleGate, REPLIES, BM25_FLOOR } from '../shared/gate.mjs';
+import { ruleGate, smallTalk, REPLIES, BM25_FLOOR } from '../shared/gate.mjs';
 import { makeRetriever } from '../shared/retrieve.mjs';
 import { extractive } from '../shared/verify.mjs';
 import { sha256hex } from '../shared/text.mjs';
@@ -82,9 +82,18 @@ function howDetails(steps, res) {
     h('ol', {}, steps.map(s => h('li', { class: s.cls }, h('span', { class: 'ic', 'aria-hidden': 'true' }, { ok: '✓', stop: '!', fail: '×' }[s.cls] || '·'), h('span', {}, h('b', {}, s.title), s.detail ? ' · ' + s.detail : '')))));
 }
 
+function renderHello(el, res) {
+  el.className = 'msg bot';
+  el.removeAttribute('aria-label');
+  el.replaceChildren(h('p', {}, res.reply || REPLIES.hello),
+    h('div', { class: 'suggest' }, STARTERS.filter((_, i) => i !== 2).map(([q]) => h('button', { class: 'chip', type: 'button', onclick: () => ask(q) }, q))));
+  scroll();
+}
+
 function renderAnswer(el, res, steps) {
+  if (res.mode === 'hello') return renderHello(el, res);
   let [cls, label] = BADGE[res.mode] || BADGE.error;
-  if (res.mode === 'extractive' && /unavailable|unreachable|offline/.test(res.reason || '')) label = 'Writer offline · my closest note, word for word';
+  if (res.mode === 'extractive' && /^(offline|writer-unreachable)$/.test(res.reason || '')) label = 'Writer offline · my notes, word for word';
   el.className = 'msg bot' + (res.mode === 'declined' || res.mode === 'blocked' ? ' declined' : '');
   el.removeAttribute('aria-label');
   el.replaceChildren(h('span', { class: 'badge ' + cls }, h('i'), label));
@@ -207,9 +216,10 @@ async function ask(raw) {
   let res;
   try {
     await loadNotes();
-    const rule = ruleGate(q);
+    const rule = ruleGate(q), talk = !rule && smallTalk(q);
     put('rules', rule ? 'stop' : 'ok', STAGE.rules, rule ? rule.cat : 'clear');
     if (rule) res = { mode: 'declined', cat: rule.cat, by: 'rules', reply: REPLIES[rule.cat] };
+    else if (talk) res = { mode: 'hello', cat: talk, reply: REPLIES[talk] };
     else if (!WORKER) { put('offline', 'stop', STAGE.offline, 'offline, notes only'); res = localAnswer(q); }
     else {
       bubble._step.textContent = LIVE['bot-check'];
