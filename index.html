@@ -5,9 +5,9 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Muneeb Ahmad · AI engineer</title>
-<meta name="description" content="I fix support chatbots that give customers wrong answers. Ask the AI version of me: it answers only from my notes and checks every sentence before you see it.">
+<meta name="description" content="Talk to my AI clone. It answers only from my notes and won't make things up. I build assistants like it, and fix chatbots that give customers wrong answers.">
 <meta name="theme-color" content="#f6f4ef">
-<meta property="og:title" content="Muneeb Ahmad · I fix support chatbots that give customers wrong answers">
+<meta property="og:title" content="Talk to my AI clone · Muneeb Ahmad">
 <meta property="og:description" content="13 measured experiments, three live demos, and an AI version of me that answers only from my notes.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://muneeb-ahmadch.github.io/">
@@ -21,76 +21,63 @@
 <script type="module" src="assets/app.js"></script>
 </head>
 <body>
-<a class="skip" href="#ask">Skip to the chat</a>
+<a class="skip" href="#q">Skip to the chat</a>
 
 <header class="nav" id="top">
   <div class="wrap">
     <a class="brand" href="#top"><span class="avatar" aria-hidden="true">MA</span>Muneeb Ahmad</a>
     <nav aria-label="Sections">
-      <a href="#ask">Ask me</a><a href="#experiments">Experiments</a><a href="#demos">Demos</a><a href="#method">How I work</a><a href="#experience">Experience</a><a href="#services">Work with me</a>
+      <a href="#ask">AI clone</a><a href="#experiments">Experiments</a><a href="#demos">Demos</a><a href="#method">How I work</a><a href="#experience">Experience</a><a href="#services">Work with me</a>
     </nav>
     <a class="btn small" href="https://www.upwork.com/freelancers/~016a7a38429f479374" rel="noopener" target="_blank" data-track="upwork-nav">Hire me on Upwork</a>
   </div>
 </header>
 
 <main>
-<section class="hero" aria-labelledby="h1">
-  <div class="wrap">
-    <div>
-      <p class="eyebrow"><span><i class="dot" aria-hidden="true"></i>Available, 30+ hrs/week</span><span>AI engineer</span><span>Lahore · UTC+5</span></p>
-      <h1 id="h1">I fix support chatbots that give customers <em>wrong answers.</em></h1>
-      <p class="lede">This page has one too. It's an AI version of me that answers only from my notes, checks every sentence against them before you see it, and tells you when it doesn't know. Ask it about my work, or try to make it say something that isn't true.</p>
-      <ul class="chips" aria-label="About the chat"><li>AI version of me</li><li>Answers only from my notes</li><li>Says no to everything else</li></ul>
-      <div class="cta">
-        <a class="btn" href="#ask" data-track="hero-ask">Ask the AI version of me</a>
-        <a class="btn ghost" href="https://www.upwork.com/freelancers/~016a7a38429f479374" rel="noopener" target="_blank" data-track="upwork-hero">Message me on Upwork</a>
-      </div>
+<section class="hero" id="ask" aria-labelledby="h1">
+  <div class="wrap hero-grid">
+    <div class="hero-intro">
+      <p class="eyebrow"><span><i class="dot" aria-hidden="true"></i>Available now</span><span>AI engineer</span><span>Lahore · UTC+5</span></p>
+      <h1 id="h1">Talk to my <em>AI&nbsp;clone.</em></h1>
+      <p class="lede">It knows my work, answers only from my notes, and won't make things up. Try to break it.</p>
     </div>
-    <aside class="proof" aria-label="Measured results">
-      <div class="row"><div class="num">15<span class="arrow">→</span><span class="good">0</span></div><p>trap runs out of 15 answered with made-up facts, before and after one prompt fix.</p></div>
-      <div class="row"><div class="num">8<span class="arrow">→</span><span class="good">1</span></div><p>runs out of 18 where an agent obeyed 1,820 bytes of hostile text, before and after my defence.</p></div>
-      <div class="row"><div class="num">13</div><p>measured experiments on one RAG pipeline, failures kept in, $4.95 total API spend.</p></div>
-      <div class="foot"><span>Every figure links to its write-up</span><a href="#experiments">See all 13 →</a></div>
-    </aside>
-  </div>
-</section>
 
-<section id="ask" class="alt" aria-labelledby="ask-h">
-  <div class="wrap">
-    <p class="kicker">01 · Ask me</p>
-    <h2 id="ask-h">Talk to the AI version of me</h2>
-    <p class="sub">It answers from 80 notes I wrote about my work. Every sentence is checked against the note it cites, and if a check fails you get the note itself, word for word. Nothing you type is stored.</p>
-    <div class="ask-grid">
-      <div class="chat">
-        <div class="chat-head">
-          <span class="avatar" aria-hidden="true">MA</span>
-          <div class="who"><b>Muneeb's AI version</b><span>answers from my notes, not from the internet</span></div>
-          <span class="status" id="status"><i class="dot" aria-hidden="true"></i>ready</span>
-        </div>
-        <div class="msgs" id="msgs" role="log" aria-live="polite" aria-label="Conversation">
-          <div class="msg bot intro"><p>Hi, I'm the AI version of Muneeb. Ask me about my experiments, my demos, how I'd fix your chatbot, what I charge or when I'm available. I only answer from my notes, so if something isn't there, I'll say so.</p></div>
-        </div>
-        <div class="chipbar">
-          <span class="lab">Ask about</span>
-          <div class="chiprow" id="chips-ask"></div>
-          <span class="lab">Try to break it</span>
-          <div class="chiprow" id="chips-break"></div>
-        </div>
+    <div class="chat" id="chat">
+      <div class="chat-head">
+        <span class="avatar live" aria-hidden="true">MA</span>
+        <div class="who"><b>Muneeb's AI clone</b><span id="status">answers from my notes · checks every sentence</span></div>
+        <a class="how-link" href="#developer">How it works</a>
+      </div>
+      <div class="msgs" id="msgs" role="log" aria-live="polite" aria-label="Conversation">
+        <div class="msg bot intro"><p>Hi, I'm Muneeb's AI clone. Ask me about my work, my experiments, or what I'd do with your chatbot.</p></div>
+        <div class="starters" id="starters"></div>
+      </div>
+      <div class="composer">
+        <div class="chiprow" id="chips" aria-label="Suggested questions"></div>
         <div class="ts" id="ts" aria-live="polite"></div>
         <form class="form" id="ask-form" autocomplete="off">
           <label class="skip" for="q">Your question</label>
-          <input id="q" name="q" type="text" maxlength="500" placeholder="Ask about my work, method or rates…" enterkeyhint="send" required>
-          <button class="btn accent" type="submit">Ask</button>
+          <input id="q" name="q" type="text" maxlength="500" placeholder="Ask my AI clone anything about my work…" enterkeyhint="send" required>
+          <button class="send" type="submit" aria-label="Send"><svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M4 12l16-8-6 16-2.5-6.5L4 12z" fill="currentColor"/></svg></button>
         </form>
-        <p class="note">An AI version of me, not me typing. For anything it can't answer, message the real me on <a href="https://www.upwork.com/freelancers/~016a7a38429f479374" rel="noopener" target="_blank">Upwork</a>.</p>
       </div>
-      <aside class="trace" aria-label="Behind the scenes">
-        <h3><span aria-hidden="true">⚙</span> Behind the scenes</h3>
-        <p class="lede2">Each question passes these checks. Watch them run.</p>
-        <ol id="trace"><li class="empty">Ask something, or press a chip.</li></ol>
-        <p class="honest">The prompt is not the guardrail. The last check is a verifier that rejects any sentence my notes don't support, the lesson of my experiment 12, where the guard I trusted agreed with the attacker.</p>
-      </aside>
     </div>
+    <div class="outro">
+      <div class="pitch">
+          <a class="pitch-card" href="https://www.upwork.com/freelancers/~016a7a38429f479374" rel="noopener" target="_blank" data-track="pitch-build"><b>Want one like this?</b><span>An AI assistant on your documents that can't go off-script.</span><i aria-hidden="true">→</i></a>
+          <a class="pitch-card" href="https://www.upwork.com/freelancers/~016a7a38429f479374" rel="noopener" target="_blank" data-track="pitch-fix"><b>Is your chatbot making things up?</b><span>I'll find why, fix it, and show you the before and after.</span><i aria-hidden="true">→</i></a>
+        </div>
+        <p class="sign"><span class="avatar" aria-hidden="true">MA</span><span><strong>Muneeb Ahmad</strong> · I fix support chatbots that give customers wrong answers</span></p>
+    </div>
+  </div>
+</section>
+
+<section class="proofbar" aria-label="Measured results">
+  <div class="wrap">
+    <div class="stat"><div class="num">15<span>→</span><em>0</em></div><p>hallucinated trap runs, after one fix</p></div>
+    <div class="stat"><div class="num">8<span>→</span><em>1</em></div><p>of 18 runs obeyed a poisoned document</p></div>
+    <div class="stat"><div class="num">130<span>/</span>130</div><p>attacks on this clone that got nothing</p></div>
+    <div class="stat"><div class="num">13</div><p>measured experiments, failures kept in</p></div>
   </div>
 </section>
 
@@ -98,7 +85,7 @@
   <div class="wrap">
     <p class="kicker">02 · Measured, not claimed</p>
     <h2 id="x-h">Thirteen experiments on one RAG pipeline</h2>
-    <p class="sub">Each one asks a question that can be answered with a number and records the answer it actually got. Five of the thirteen disproved what I set out to prove. Those stayed in.</p>
+    <p class="sub">One question, one number, each. The five that proved me wrong stayed in.</p>
     <div class="xgrid">
       <a class="x wide" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio" rel="noopener" target="_blank"><div class="fig">rag_eval.py</div><p><b>One harness, 2,183 lines.</b> A 50-question golden set, 5 trap questions the corpus cannot answer, an LLM judge with a faithfulness gate, a CI gate that exits non-zero, Langfuse tracing. Every table in every write-up came out of it.</p><span class="go">The repository →</span></a>
       <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/09-answer-defense" rel="noopener" target="_blank"><div class="top"><span>09 · Answer defense</span></div><div class="fig">15/15 → 0/15</div><p>trap runs hallucinated, before and after a better prompt. Groundedness 66.9% → 95.6%.</p><span class="go">Write-up →</span></a>
@@ -122,7 +109,7 @@
   <div class="wrap">
     <p class="kicker">03 · Built before applying</p>
     <h2 id="d-h">Three demos you can run</h2>
-    <p class="sub">Each was built from a job post before I applied, with stand-in data, so the client could try the hard part of their own project first.</p>
+    <p class="sub">Built from a client's post before I applied, so they could try the hard part first.</p>
     <div class="dgrid">
       <a class="d" href="https://muneeb-ahmadch.github.io/demos/when-not-to-use-ai/" rel="noopener" target="_blank" data-track="demo-when-not">
         <div class="shot"><img src="assets/img/demo-when-not-to-use-ai.jpg" alt="Screenshot of the when-not-to-use-AI assistant demo" loading="lazy" width="1200" height="750"></div>
@@ -144,7 +131,7 @@
   <div class="wrap">
     <p class="kicker">04 · How I work</p>
     <h2 id="m-h">Measure, fix the biggest cause, measure again</h2>
-    <p class="sub">None of the failures in my repository were found by reading code. They were found by building something that produces a number, then trying to make the number move.</p>
+    
     <div class="steps">
       <div class="step"><div class="n">1</div><b>Reproduce</b><p>The failure, with a test set built from your real questions, not toy examples.</p></div>
       <div class="step"><div class="n">2</div><b>Measure</b><p>Before touching anything: answer accuracy, faithfulness to your documents, cost per query.</p></div>
@@ -184,8 +171,9 @@
   <div class="wrap">
     <p class="kicker">06 · Work with me</p>
     <h2 id="s-h">Ways to start</h2>
-    <p class="sub">Everything runs through Upwork: messages, calls and contracts. I usually start with a fixed-price diagnostic and a written report, and you keep the report whether or not you hire me for the fix.</p>
+    <p class="sub">Everything runs through Upwork. Most clients start with a fixed-price diagnostic.</p>
     <div class="sgrid">
+      <div class="s feature"><div class="price">Your own</div><h3>AI clone or assistant, like this one</h3><p>Answers only from your documents, checks every sentence, says no to everything else. Fixed price, tests included.</p><a class="btn small accent" href="https://www.upwork.com/freelancers/~016a7a38429f479374" rel="noopener" target="_blank" data-track="upwork-clone">Ask for a quote</a></div>
       <div class="s"><div class="price">$30<small> / hour</small></div><h3>Hourly</h3><p>Time tracker on. For a defined job I quote one fixed price, usually in milestones.</p></div>
       <div class="s"><div class="price">$40<small> / 30 min</small></div><h3>Consultation</h3><p>A 30-minute video call, booked from my Upwork profile, to look at your problem together.</p></div>
       <div class="s"><div class="price">from $95</div><h3>Reliability diagnostic</h3><p>A written diagnostic of your LLM, RAG or agent app.</p>
@@ -201,8 +189,8 @@
 <section id="developer" class="alt" aria-labelledby="dev-h">
   <div class="wrap">
     <p class="kicker">07 · For your developer</p>
-    <h2 id="dev-h">How this chat is built, and how it was tested</h2>
-    <p class="sub">A static page, a free Cloudflare Worker, an open 8B model and $0 a month. The guardrails are code you can read.</p>
+    <h2 id="dev-h">How my AI clone is built, and how I tried to break it</h2>
+    <p class="sub">A static page, a free Cloudflare Worker, an open 8B model. $0 a month.</p>
     <details class="dev" open>
       <summary>The layers, in order</summary>
       <div class="devbody">

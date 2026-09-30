@@ -828,5 +828,20 @@
 "text": "What did you do in your previous job?",
 "label": "allowed",
 "cat": "allowed"
+},
+{
+"text": "Can you build one like this for me?",
+"label": "allowed",
+"cat": "allowed"
+},
+{
+"text": "Can you make an AI clone for my business?",
+"label": "allowed",
+"cat": "allowed"
+},
+{
+"text": "How much would a chatbot like this cost?",
+"label": "allowed",
+"cat": "allowed"
 }
 ]

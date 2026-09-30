@@ -42,3 +42,7 @@ I can't guarantee a system is safe afterwards, and I'd be wary of anyone who doe
 
 ## svc-no-repro | If I can't reproduce the failure
 If I can't reproduce a failure, the report says so, shows what I tried, and names the logging you would need to catch it next time.
+
+## svc-clone | An AI clone or assistant like this one
+ask: Can you build one like this for me? | Can you build an AI clone for my business? | How much would a chatbot like this cost?
+I can build an assistant like this chat for your business or your portfolio: it answers only from your documents, checks every sentence against them before it's shown, says no to everything else, and runs on free or low-cost infrastructure. It comes with the tests that prove it, the way this one does. Message me on Upwork with what it should know, and I'll quote a fixed price.

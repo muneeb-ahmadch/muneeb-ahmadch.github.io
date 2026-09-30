@@ -136,6 +136,8 @@ async function handleAsk(req, env, emit) {
   const top = retriever.retrieve(rq, { cos: cosChunks, k: 6 });
   emit({ t: 'stage', stage: 'retrieve', status: 'ok', notes: top.map(c => ({ id: c.id, title: c.title })) });
   if (g.decision === 'unknown') return final('unknown', { reply: REPLIES.unknown, suggest: top.slice(0, 3).map(c => c.title) });
+  // The question is one my notes were written to answer: the note itself is the best answer, and needs no model.
+  if (top[0].intent >= 0.8) return final('extractive', { sentences: extractive(top), reason: 'exact-match' });
 
   // 6. Quota: counts only turns that reach the model; any failure means no model, and my notes instead.
   emit({ t: 'stage', stage: 'quota', status: 'run' });
