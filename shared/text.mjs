@@ -83,10 +83,11 @@ export function properNouns(s) {
   const out = new Set();
   const parts = String(s).split(/(?<=[.!?:])\s+/);
   for (const p of parts) {
-    const toks = p.match(/[A-Za-z][A-Za-z0-9.+#-]*/g) || [];
+    // Whole tokens only, so "8B" or "3.1" never yields a stray letter; numbers are checked separately.
+    const toks = (p.match(/[A-Za-z0-9][A-Za-z0-9.+#'’-]*/g) || []).map(t => t.replace(/['’]s$/, '').replace(/[.'’-]+$/, ''));
     toks.forEach((tok, i) => {
-      if (i === 0 || tok === 'I') return;
-      if (/^[A-Z]/.test(tok) || /[A-Z].*[A-Z]/.test(tok)) out.add(tok.toLowerCase().replace(/[.]+$/, ''));
+      if (i === 0 || tok === 'I' || !/^[A-Za-z]/.test(tok)) return;
+      if (/^[A-Z]/.test(tok) || /[A-Z].*[A-Z]/.test(tok)) out.add(tok.toLowerCase());
     });
   }
   return out;

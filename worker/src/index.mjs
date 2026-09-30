@@ -4,7 +4,7 @@ import INDEX from '../../kb/index.json';
 import VECS from '../../kb/index.bin';
 import { ruleGate, knnGate, REPLIES, isFollowup } from '../../shared/gate.mjs';
 import { makeRetriever, dot } from '../../shared/retrieve.mjs';
-import { verifyAnswer, extractive } from '../../shared/verify.mjs';
+import { verifyAnswer, extractive, questionFit } from '../../shared/verify.mjs';
 import { buildMessages, parseModelJson, CATEGORIES } from '../../shared/prompt.mjs';
 import { sha256hex } from '../../shared/text.mjs';
 export { Quota } from './quota.mjs';
@@ -14,6 +14,9 @@ const D = INDEX.dim, CH = INDEX.chunks, EX = INDEX.exemplars, NC = CH.length, NE
 const retriever = makeRetriever(CH);
 const MODEL = '@cf/meta/llama-3.1-8b-instruct-fp8-fast';
 const EMBED = '@cf/baai/bge-small-en-v1.5';
+// Notes are shown verbatim after a rejected draft only when the top note clearly matches the question
+// (set 1 Oct 2026 from the eval set: no unanswerable question reached 0.75; 16 of 40 answerable did).
+const STRONG_MATCH = 0.75;
 const enc = new TextEncoder();
 
 const withTimeout = (p, ms, label) => Promise.race([p, new Promise((_, rej) => setTimeout(() => rej(new Error(label + ' timeout')), ms))]);
@@ -58,17 +61,23 @@ async function turnstileOk(env, token, q, ip) {
 
 async function promptGuard(env, q) {
   if (!env.GROQ_KEY) return { status: 'skipped' };
-  const r = await withTimeout(fetch('https://api.groq.com/openai/v1/chat/completions', {
+  const call = () => withTimeout(fetch('https://api.groq.com/openai/v1/chat/completions', {
     method: 'POST',
     headers: { 'authorization': `Bearer ${env.GROQ_KEY}`, 'content-type': 'application/json' },
     body: JSON.stringify({ model: 'meta-llama/llama-prompt-guard-2-86m', messages: [{ role: 'user', content: q }] }),
   }), 4000, 'guard');
+  let r = await call();
+  if (r.status === 429) { // free tier: 30 requests a minute; one short retry, then fail closed
+    const wait = Math.min(3000, 1000 * (parseFloat(r.headers.get('retry-after')) || 1.5));
+    await new Promise(res => setTimeout(res, wait));
+    r = await call();
+  }
   if (!r.ok) throw new Error('guard http ' + r.status);
   const j = await r.json();
   const content = String(j?.choices?.[0]?.message?.content ?? '').trim();
   const num = parseFloat(content);
   const score = Number.isFinite(num) ? num : /malicious|jailbreak|injection|unsafe/i.test(content) ? 1 : 0;
-  return { status: 'ok', score, malicious: score >= 0.5 };
+  return { status: 'ok', score, malicious: score >= 0.5, ...(env.DEV === '1' ? { raw: content.slice(0, 80) } : {}) };
 }
 
 function sourcesFor(ids) {
@@ -141,8 +150,14 @@ async function handleAsk(req, env, emit) {
   emit({ t: 'stage', stage: 'guard', status: 'run' });
   let guard;
   try { guard = await promptGuard(env, q); } catch { guard = { status: 'error' }; }
-  emit({ t: 'stage', stage: 'guard', status: guard.status === 'ok' ? (guard.malicious ? 'declined' : 'ok') : guard.status, score: guard.score });
-  if (guard.malicious) return final('declined', { cat: 'meta', by: 'guard', reply: REPLIES.meta });
+  emit({ t: 'stage', stage: 'guard', status: guard.status === 'ok' ? (guard.malicious ? 'declined' : 'ok') : guard.status, score: guard.score, ...(guard.raw !== undefined ? { raw: guard.raw } : {}) });
+  // The classifier also flags questions that are ABOUT injection (my own specialty). Those get my notes verbatim,
+  // never the model; anything else it flags is declined.
+  if (guard.malicious) {
+    if (/\b(prompt[- ]injection|injection|jailbreak\w*|guardrails?|red[- ]?team\w*|poison\w*|attacks?)\b/i.test(q))
+      return final('extractive', { sentences: extractive(top), reason: 'injection-suspected' });
+    return final('declined', { cat: 'meta', by: 'guard', reply: REPLIES.meta });
+  }
   if (guard.status === 'error') return final('extractive', { sentences: extractive(top), reason: 'guard-unavailable' });
 
   // 8. The writer: an open 8B model, temperature 0, sees only the retrieved notes.
@@ -169,7 +184,15 @@ async function handleAsk(req, env, emit) {
   const rep = verifyAnswer(out, top);
   emit({ t: 'stage', stage: 'verify', status: rep.ok ? 'ok' : rep.empty ? 'empty' : 'fail', checks: rep.checks, dropped: rep.soft.length, hard: rep.hard.length, ...(env.DEV === '1' ? { debug: { out, hard: rep.hard, soft: rep.soft } } : {}) });
   if (rep.empty) return final('unknown', { reply: REPLIES.unknown, suggest: top.slice(0, 3).map(c => c.title) });
-  if (!rep.ok) return final('extractive', { sentences: extractive(top), reason: rep.hard.length ? 'verifier-rejected' : 'unsupported' , verifier: { hard: rep.hard.slice(0, 5), soft: rep.soft.slice(0, 5) } });
+  if (!rep.ok) {
+    const reason = rep.hard.length ? 'verifier-rejected' : 'unsupported';
+    if ((top[0].cos ?? 0) >= STRONG_MATCH || top[0].intent >= 0.5) return final('extractive', { sentences: extractive(top), reason });
+    return final('unknown', { reply: REPLIES.unknown, suggest: top.slice(0, 3).map(c => c.title), reason });
+  }
+  // 11. The answer has to answer the question asked, not a neighbouring one.
+  const fit = questionFit(q, rep.kept, top);
+  emit({ t: 'stage', stage: 'fit', status: fit.ok ? 'ok' : 'fail', detail: fit.why });
+  if (!fit.ok) return final('unknown', { reply: REPLIES.unknown, suggest: top.slice(0, 3).map(c => c.title), reason: fit.why });
   return final('llm', { sentences: rep.kept, checks: rep.checks, dropped: rep.soft.length });
 }
 

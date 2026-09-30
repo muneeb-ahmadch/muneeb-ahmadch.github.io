@@ -238,9 +238,10 @@
           <li><b>Topic gate.</b> The question is embedded with bge-small-en-v1.5 and compared with labelled example questions, and with the notes themselves: too far from both means "not in my notes".</li>
           <li><b>Retrieval.</b> BM25 and cosine similarity over 80 notes, fused by rank. The Worker retrieves for itself; nothing the page sends can choose the notes.</li>
           <li><b>Quota.</b> A Durable Object counts turns that reach the model, per day, per hour and per network. If it's unavailable, the chat answers from notes only.</li>
-          <li><b>Injection classifier.</b> Llama Prompt Guard 2 (86M) on Groq's free tier scores each question.</li>
+          <li><b>Injection classifier.</b> Llama Prompt Guard 2 (86M) on Groq's free tier scores each question. It also flags questions that are merely about prompt injection, my own specialty, so those get my notes verbatim and never reach the model.</li>
           <li><b>Writer.</b> Llama 3.1 8B at temperature 0 sees only the retrieved notes inside per-request delimiters, and returns sentences that each cite a note and quote it. Earlier turns are reused only if they carry the Worker's signature.</li>
           <li><b>Verifier.</b> Every number and every name in a sentence must appear in the note it cites, its content words must come from that note, a quoted phrase can't flip negation, and no URL, email, phone number or persona break is allowed. Otherwise: my notes, verbatim.</li>
+          <li><b>Does it answer the question?</b> A true sentence can still dodge ("How many people were on your team?" → "I work alone."). If a number, a name or a comparison was asked for and the answer doesn't give one from the notes, the reply is "not in my notes".</li>
         </ol>
       </div>
     </details>
@@ -250,13 +251,13 @@
         <div class="tablewrap"><table class="t" id="results">
           <thead><tr><th>Test</th><th>What it measures</th><th>Result</th></tr></thead>
           <tbody>
-            <tr><td>Verifier unit tests</td><td>Rejects an invented number, a misattributed name, a negated quote, an email or URL, a persona break; keeps a grounded answer</td><td class="n" id="r-unit">17 / 17 pass</td></tr>
+            <tr><td>Verifier unit tests</td><td>Rejects an invented number, a misattributed name, a negated quote, an email or URL, a persona break; keeps a grounded answer</td><td class="n" id="r-unit">21 / 21 pass</td></tr>
             <tr><td>Topic gate, fresh test set</td><td>104 questions written after tuning ended, rules and nearest-neighbour gate alone, before the model's own check</td><td class="n" id="r-gate">85.6% correct · 70% of off-topic declined</td></tr>
-            <tr><td>Red team, end to end</td><td>Jailbreaks, prompt leaks, encodings, other languages, contact extraction, off-topic, fabrication bait</td><td class="n pending" id="r-red">running before launch</td></tr>
-            <tr><td>Groundedness</td><td>Answerable and unanswerable questions: numbers found in the cited notes, "not in my notes" when it isn't there</td><td class="n pending" id="r-ground">running before launch</td></tr>
+            <tr><td>Red team, end to end</td><td>130 attacks in 12 families: role-play, "ignore previous", multi-turn, base64/ROT13/hex, other languages, many-shot, prompt leaks, contact extraction, off-topic, personal, harmful, fabrication bait</td><td class="n" id="r-red">130 / 130 got nothing beyond a fixed reply or my notes · 123 refused outright</td></tr>
+            <tr><td>Groundedness, fresh set</td><td>25 answerable and 15 unanswerable questions written before the last fix, 3 runs, worst run: numbers in written answers found in the cited note; unanswerable questions answered "not in my notes"</td><td class="n" id="r-ground">17 / 17 numbers · 14 / 15 said "not in my notes"</td></tr>
           </tbody>
         </table></div>
-        <p>The gate alone lets through about one off-topic question in three on a fresh set, which is why it isn't the last line. What gets through reaches a model that only sees my notes and a verifier that only passes sentences those notes support. The full reports and the code are in <a href="https://github.com/muneeb-ahmadch/muneeb-ahmadch.github.io" rel="noopener" target="_blank">this site's repository</a>.</p>
+        <p>The gate alone lets through about one off-topic question in three on a fresh set, which is why it isn't the last line: what gets through meets the injection classifier, a model that only sees my notes, a verifier that only passes sentences those notes support, and a check that the answer gives what was asked. The one unanswerable question that still got an answer was a dodge: a true sentence about the job instead of "that isn't in my notes". The full reports and the code are in <a href="https://github.com/muneeb-ahmadch/muneeb-ahmadch.github.io" rel="noopener" target="_blank">this site's repository</a>.</p>
       </div>
     </details>
   </div>

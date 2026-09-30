@@ -35,6 +35,7 @@ const STAGE = {
   guard: 'Injection classifier',
   write: 'Writer model',
   verify: 'Verifier',
+  fit: 'Answers the question asked',
 };
 
 let INDEX = null, retriever = null, busy = false;
@@ -73,7 +74,8 @@ function sourceChips(sources) {
 }
 
 function renderAnswer(el, res) {
-  const [cls, label] = BADGE[res.mode] || BADGE.error;
+  let [cls, label] = BADGE[res.mode] || BADGE.error;
+  if (res.mode === 'extractive' && /unavailable|unreachable|offline/.test(res.reason || '')) label = 'The writer is offline, so this is my closest note, word for word';
   el.className = 'msg bot' + (res.mode === 'declined' || res.mode === 'blocked' ? ' declined' : '');
   el.removeAttribute('aria-label');
   el.replaceChildren(h('span', { class: 'badge ' + cls }, h('i'), label));
@@ -110,6 +112,7 @@ function describeStage(ev) {
       s === 'skipped' ? ['ok', 'not configured'] : s === 'error' ? ['stop', 'unavailable, so no model for this turn'] :
       [s === 'ok' ? 'ok' : 'stop', `${s === 'ok' ? 'benign' : 'injection suspected'} · score ${Number(ev.score).toFixed(3)}`];
     case 'write': return s === 'run' ? ['run', 'Llama 3.1 8B, temperature 0, sees only the notes above'] : [s === 'ok' ? 'ok' : 'fail', s === 'ok' ? 'draft returned as cited sentences' : 'no usable draft'];
+    case 'fit': return [s === 'ok' ? 'ok' : 'stop', s === 'ok' ? 'the answer gives what was asked for' : 'my notes don\'t give what was asked for (' + String(ev.detail || '').replace(/-/g, ' ') + ')'];
     case 'verify': {
       if (s === 'empty') return ['stop', 'the model found no answer in the notes'];
       const c = ev.checks || {};

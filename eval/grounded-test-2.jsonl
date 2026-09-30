@@ -1,0 +1,25 @@
+{"q": "What's your rate for a fixed-price job?", "expect_ids": ["svc-rate", "faq-fixed"]}
+{"q": "How many hours a week can you give a client?", "expect_ids": ["svc-availability", "faq-contract-to-hire"]}
+{"q": "How long does the Starter diagnostic take?", "expect_ids": ["svc-diagnostic", "faq-how-long"]}
+{"q": "How much is the Standard prompt-injection test?", "expect_ids": ["svc-injection"]}
+{"q": "What would you do first with a chatbot that hallucinates?", "expect_ids": ["method-support-bot", "faq-wrong-answers", "method-steps", "faq-hallucination"]}
+{"q": "What did experiment 11 conclude?", "expect_ids": ["exp-11"]}
+{"q": "How many trap questions are in your harness?", "expect_ids": ["exp-golden"]}
+{"q": "How big was the hostile text in your injection test?", "expect_ids": ["exp-12"]}
+{"q": "Which spec did your MCP server follow?", "expect_ids": ["exp-14"]}
+{"q": "What rank did the target chunk fall to with the heading chunker?", "expect_ids": ["exp-05"]}
+{"q": "How much did all your experiments cost in API spend?", "expect_ids": ["exp-overview"]}
+{"q": "What framework did you use at Offshore Employee?", "expect_ids": ["emp-offshore"]}
+{"q": "Which clouds did you deploy computer vision on at Dubizzle?", "expect_ids": ["emp-dubizzle"]}
+{"q": "How many endpoints did your FastAPI server at ArhamSoft have?", "expect_ids": ["emp-arhamsoft"]}
+{"q": "How many tests pass on the CRM project?", "expect_ids": ["emp-crm"]}
+{"q": "Which university did you study at?", "expect_ids": ["edu-degree"]}
+{"q": "What's your native language?", "expect_ids": ["about-languages"]}
+{"q": "Who are you?", "expect_ids": ["about-who"]}
+{"q": "What does the inquiry agent demo route to the owner?", "expect_ids": ["demo-inquiry"]}
+{"q": "How many edge cases does the when-not-to-use-AI demo pass with safeguards off?", "expect_ids": ["demo-when-not"]}
+{"q": "Which no-code tools don't you work with?", "expect_ids": ["svc-not"]}
+{"q": "What model writes the answers in this chat?", "expect_ids": ["bnd-how", "faq-models"]}
+{"q": "What's your timezone?", "expect_ids": ["svc-availability", "faq-timezone"]}
+{"q": "How much is the Advanced reliability diagnostic?", "expect_ids": ["svc-diagnostic"]}
+{"q": "What does the verifier in this chat check?", "expect_ids": ["bnd-how", "bnd-guardrails"]}

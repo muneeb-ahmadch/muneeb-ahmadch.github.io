@@ -1,6 +1,6 @@
 // The output verifier: the real guardrail. The model's answer is shown only if every sentence is supported
 // by the notes retrieved for this question. Hard failures reject the whole answer; soft failures drop a sentence.
-import { normalize, words, stem, contentStems, numbers, properNouns, hasNegation, wordCount, GLUE } from './text.mjs';
+import { normalize, words, stem, contentStems, numbers, properNouns, hasNegation, wordCount, sentences, GLUE } from './text.mjs';
 
 export const MAX_WORDS = 120;
 export const MAX_SENTENCES = 5;
@@ -102,4 +102,45 @@ export function verifyAnswer(out, retrieved) {
 export function extractive(retrieved) {
   const [a] = retrieved;
   return a ? [{ text: a.text, source: a.id }] : [];
+}
+
+// Does a verified answer actually answer the question? Every sentence can be true and still mislead as an answer
+// ("How many people were on your team?" → "I work alone."). These checks turn such answers into "not in my notes".
+const HOW_MANY = /\bhow many\s+(?:of\s+)?(?:your\s+|the\s+)?([a-z-]+)/i;
+const NUMERIC_Q = /\b(how many|how much|how long|how old|how big|how often|what year|which year|when did|what (?:was |is )?(?:the |your )?(?:score|rank|ranking|percentage|accuracy|salary|gpa|revenue)|score|ranking|gpa|salary|revenue|stars|reputation|accuracy)\b/i;
+const ZERO = /\b(no|none|zero|not yet|never)\b/i;
+const SUPERLATIVE = /\b(most|least|best|worst|highest|lowest|favou?rite|biggest|largest|smallest)\b/i;
+const ENTITY_Q = /^\s*(?:which|who)\b|^\s*what (?:company|companies|client|clients|model|llm|framework|frameworks|tool|tools|database|cloud|university|spec|language|languages)\b|\bname (?:the|your|three|two|a)\b/i;
+
+export function questionFit(q, kept, retrieved) {
+  const answer = kept.map(s => s.text).join(' ');
+  const cited = retrieved.filter(c => kept.some(s => s.source === c.id)).map(c => `${c.title}. ${c.text}`).join(' ');
+  const notes = retrieved.map(c => `${c.title}. ${c.text}`).join(' ');
+  const noteWords = new Set(words(notes).map(stem));
+  // 1. A named thing in the question that none of the retrieved notes mention.
+  const qNames = [...properNouns(q)].filter(n => words(n).every(w => w.length > 1));
+  const missing = qNames.filter(n => !words(n).every(w => noteWords.has(stem(w))));
+  if (missing.length) return { ok: false, why: 'not-in-notes:' + missing.join(',') };
+  // 2. A number is asked for: the answer must give one about the thing asked (or say none).
+  if (NUMERIC_Q.test(q)) {
+    const qNums = numbers(q);
+    const hm = q.match(HOW_MANY);
+    const noun = hm ? stem(hm[1].toLowerCase()) : null;
+    const sents = sentences(answer);
+    const good = sents.some(s => {
+      const hasNum = [...numbers(s)].some(n => !qNums.has(n)) || ZERO.test(s);
+      return hasNum && (!noun || words(s).map(stem).includes(noun));
+    });
+    if (!good) return { ok: false, why: 'no-number-for-question' };
+  }
+  // 3. A comparison is asked for: the cited notes must make it.
+  const sup = q.match(SUPERLATIVE);
+  if (sup && !new RegExp(`\\b${sup[1]}\\b`, 'i').test(cited)) return { ok: false, why: 'comparison-not-in-notes' };
+  // 4. A named thing is asked for: the answer must name something the question did not.
+  if (ENTITY_Q.test(q)) {
+    const qw = new Set(words(q).map(stem));
+    const fresh = [...properNouns(answer)].some(n => words(n).some(w => !qw.has(stem(w)))) || [...numbers(answer)].some(n => !numbers(q).has(n));
+    if (!fresh) return { ok: false, why: 'no-named-answer' };
+  }
+  return { ok: true };
 }

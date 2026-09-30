@@ -18,6 +18,10 @@ test('proper nouns skip the sentence start and "I"', () => {
   assert.deepEqual([...properNouns('I worked at Dubizzle Labs. Then I used FastAPI.')].sort(), ['dubizzle', 'fastapi', 'labs']);
 });
 
+test('proper nouns never split a model size or a possessive', () => {
+  assert.deepEqual([...properNouns("An open model, Llama 3.1 8B, runs on Cloudflare's free tier.")].sort(), ['cloudflare', 'llama']);
+});
+
 test('a grounded answer passes', () => {
   const r = verifyAnswer({ sentences: [
     { text: 'The prompt I had been shipping hallucinated on 15 of 15 trap runs.', source: 'exp-09', quote: 'hallucinated on 15 of 15 trap runs' },
@@ -105,4 +109,17 @@ test('model JSON is found inside prose and broken JSON returns null', () => {
   assert.deepEqual(parseModelJson('Sure! {"category":"professional","sentences":[]} hope that helps'), { category: 'professional', sentences: [] });
   assert.equal(parseModelJson('{"sentences": [ {"text": "unterminated'), null);
   assert.equal(parseModelJson('no json here'), null);
+});
+
+import { questionFit } from '../shared/verify.mjs';
+const fitTop = ['faq-team', 'emp-dubizzle', 'emp-leadingit', 'svc-availability', 'exp-golden', 'emp-comlink'].map(get);
+test('a true sentence that does not answer the question is caught', () => {
+  assert.equal(questionFit('How many people were on your team at Dubizzle?', [{ text: 'I work alone.', source: 'faq-team' }], fitTop).ok, false);
+  assert.equal(questionFit('Which company paid you the most?', [{ text: 'I have worked at Leading IT Middle East since September 2025.', source: 'emp-leadingit' }], fitTop).ok, false);
+  assert.equal(questionFit('Do you know Terraform?', [{ text: 'I work in Python.', source: 'faq-team' }], fitTop).ok, false);
+});
+test('a real answer to a number, a name or a plain question passes', () => {
+  assert.equal(questionFit('How many hours a week can you work?', [{ text: "I'm available for more than 30 hours a week.", source: 'svc-availability' }], fitTop).ok, true);
+  assert.equal(questionFit('How many trap questions are in your harness?', [{ text: 'A separate trap set has 5 questions the corpus provably cannot answer.', source: 'exp-golden' }], fitTop).ok, true);
+  assert.equal(questionFit('Where are you based?', [{ text: "I'm in Lahore.", source: 'svc-availability' }], fitTop).ok, true);
 });
