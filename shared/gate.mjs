@@ -18,6 +18,9 @@ export const REPLIES = {
   toolong: "Please keep questions under 500 characters.",
   empty: "Ask me about my work, my method or what I offer.",
   unknown: "I don't have that in my notes, so I won't guess. The real me answers on Upwork.",
+  // A nearest-neighbour decline can't tell "off-topic" from "a work question my notes don't cover", so its reply is
+  // honest for both.
+  notcovered: "That isn't in my notes, so I won't guess. I keep this chat to my work: my experiments, demos, method and what I offer.",
 };
 
 const RULES = [

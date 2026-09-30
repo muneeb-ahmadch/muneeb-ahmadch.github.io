@@ -127,7 +127,10 @@ async function handleAsk(req, env, emit) {
   const kbMax = Math.max(...cosChunks);
   const g = knnGate(cosTo(qv, NC, NE), EX, kbMax, { followup });
   emit({ t: 'stage', stage: 'gate', status: g.decision, detail: g.cat, score: Number(kbMax.toFixed(3)) });
-  if (g.decision === 'declined') return final('declined', { cat: g.cat, by: 'gate', reply: REPLIES[g.cat] || REPLIES.offtopic });
+  if (g.decision === 'declined') {
+    const clear = ['personal', 'contact', 'meta', 'harmful'].includes(g.cat);
+    return final('declined', { cat: g.cat, by: 'gate', reply: clear ? REPLIES[g.cat] : REPLIES.notcovered });
+  }
 
   // 5. Retrieval from this Worker's own index (the client's retrieval is display only).
   const top = retriever.retrieve(rq, { cos: cosChunks, k: 6 });
@@ -178,7 +181,7 @@ async function handleAsk(req, env, emit) {
   // 9. The model may only decline more: a non-professional category ends in a fixed reply.
   const cat = String(out.category || '').toLowerCase();
   if (CATEGORIES.includes(cat) && cat !== 'professional')
-    return final('declined', { cat, by: 'model', reply: REPLIES[cat] || REPLIES.offtopic });
+    return final('declined', { cat, by: 'model', reply: ['personal', 'contact', 'meta', 'harmful'].includes(cat) ? REPLIES[cat] : REPLIES.notcovered });
 
   // 10. The verifier: every sentence must be supported by the note it cites.
   const rep = verifyAnswer(out, top);
@@ -193,7 +196,9 @@ async function handleAsk(req, env, emit) {
   const fit = questionFit(q, rep.kept, top);
   emit({ t: 'stage', stage: 'fit', status: fit.ok ? 'ok' : 'fail', detail: fit.why });
   if (!fit.ok) return final('unknown', { reply: REPLIES.unknown, suggest: top.slice(0, 3).map(c => c.title), reason: fit.why });
-  return final('llm', { sentences: rep.kept, checks: rep.checks, dropped: rep.soft.length });
+  // A sentence cut at max length can end in a comma; close it cleanly.
+  const tidy = rep.kept.map(k => ({ ...k, text: k.text.replace(/[,;:\s]+$/, '').replace(/([^.!?])$/, '$1.') }));
+  return final('llm', { sentences: tidy, checks: rep.checks, dropped: rep.soft.length });
 }
 
 export default {
