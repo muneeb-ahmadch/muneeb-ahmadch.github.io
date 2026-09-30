@@ -1,0 +1,40 @@
+{"q": "What's your hourly rate?", "expect_ids": ["svc-rate", "faq-fixed"]}
+{"q": "Are you available for a long contract?", "expect_ids": ["svc-availability", "faq-contract-to-hire"]}
+{"q": "How much does the Standard reliability diagnostic cost and what's in it?", "expect_ids": ["svc-diagnostic", "faq-how-long"]}
+{"q": "What does the Advanced prompt-injection package include?", "expect_ids": ["svc-injection"]}
+{"q": "How much is a consultation?", "expect_ids": ["svc-consultation", "faq-reach"]}
+{"q": "How would you fix a support chatbot that gives customers wrong answers?", "expect_ids": ["method-support-bot", "faq-wrong-answers"]}
+{"q": "What is your process for fixing an LLM app?", "expect_ids": ["method-steps", "method-measure"]}
+{"q": "How do engagements with you usually start?", "expect_ids": ["method-first-step", "faq-first-step"]}
+{"q": "What happened in your hallucination experiment?", "expect_ids": ["exp-09", "faq-hallucination"]}
+{"q": "What did your prompt injection experiment find?", "expect_ids": ["exp-12", "exp-12-fix"]}
+{"q": "How did you defend against the poisoned document?", "expect_ids": ["exp-12-fix", "svc-guarantee"]}
+{"q": "Does forcing citations stop prompt injection?", "expect_ids": ["exp-13"]}
+{"q": "What did the chunking experiment show at n=50?", "expect_ids": ["exp-01"]}
+{"q": "How much does one answer cost in your pipeline?", "expect_ids": ["exp-07", "faq-cost"]}
+{"q": "Was the agent loop worth it?", "expect_ids": ["exp-11"]}
+{"q": "What happened in your LangGraph crash test?", "expect_ids": ["exp-15"]}
+{"q": "Tell me about the MCP server you built.", "expect_ids": ["exp-14", "faq-agents"]}
+{"q": "What did reranking fix?", "expect_ids": ["exp-06"]}
+{"q": "How many experiments are in your repository and what did they cost?", "expect_ids": ["exp-overview"]}
+{"q": "What's in your golden set?", "expect_ids": ["exp-golden"]}
+{"q": "What did you do at Dubizzle Labs?", "expect_ids": ["emp-dubizzle", "emp-timeline"]}
+{"q": "What is your current job?", "expect_ids": ["emp-leadingit", "emp-timeline"]}
+{"q": "What did you build at ArhamSoft?", "expect_ids": ["emp-arhamsoft"]}
+{"q": "Tell me about the IBM watsonx work.", "expect_ids": ["emp-offshore"]}
+{"q": "What was your role on the fleet insurance CRM?", "expect_ids": ["emp-crm"]}
+{"q": "What is your education?", "expect_ids": ["edu-degree"]}
+{"q": "What languages do you speak?", "expect_ids": ["about-languages"]}
+{"q": "Which stack do you work in?", "expect_ids": ["faq-stack", "about-skills", "about-background"]}
+{"q": "Do you need access to our production system?", "expect_ids": ["faq-access", "svc-access"]}
+{"q": "Will you sign an NDA?", "expect_ids": ["faq-nda", "svc-access"]}
+{"q": "What don't you work on?", "expect_ids": ["svc-not", "faq-agents"]}
+{"q": "Can you guarantee our assistant is safe afterwards?", "expect_ids": ["svc-guarantee", "faq-hallucination"]}
+{"q": "Why should I hire someone with no Upwork reviews?", "expect_ids": ["faq-hire-why", "about-upwork", "about-proof"]}
+{"q": "Is this really you answering?", "expect_ids": ["about-clone", "bnd-how"]}
+{"q": "How does this chat avoid making things up?", "expect_ids": ["bnd-how", "bnd-guardrails"]}
+{"q": "Which model powers this chat?", "expect_ids": ["bnd-how", "faq-models"]}
+{"q": "What does the booking demo show?", "expect_ids": ["demo-booking"]}
+{"q": "How does the when-not-to-use-AI demo work?", "expect_ids": ["demo-when-not"]}
+{"q": "Can you build a RAG assistant on our help centre?", "expect_ids": ["faq-rag-build", "method-new-builds"]}
+{"q": "How do I contact you?", "expect_ids": ["svc-contact", "faq-reach"]}

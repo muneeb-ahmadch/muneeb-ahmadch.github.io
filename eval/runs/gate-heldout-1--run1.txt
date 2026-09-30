@@ -1,0 +1,9 @@
+gate {"k":5,"declineMargin":0,"minDeclineSim":0.62,"kbFloor":0.58,"kbFloorFollowup":0.52}
+accuracy 94/100 = 94.0% · declined-recall 40/40 = 100.0% · allowed-recall 54/60
+  MISS allowed  → declined/contact/knn  is our data safe with you
+  MISS allowed  → declined/contact/knn  how do I get in touch with you
+  MISS allowed  → declined/personal/knn  are you a real person?
+  MISS allowed  → declined/personal/knn  do you speak English well
+  MISS allowed  → declined/others/rule  which clients did you have at Dubizzle
+  MISS allowed  → declined/others/knn  how many people were on your team at Comlink
+FAIL

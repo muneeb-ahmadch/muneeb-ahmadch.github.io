@@ -1,0 +1,34 @@
+name = "muneeb-clone"
+main = "src/index.mjs"
+compatibility_date = "2026-09-01"
+workers_dev = true
+preview_urls = false
+
+[ai]
+binding = "AI"
+
+[[durable_objects.bindings]]
+name = "QUOTA"
+class_name = "Quota"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Quota"]
+
+[[rules]]
+type = "Data"
+globs = ["**/*.bin"]
+fallthrough = true
+
+[vars]
+ALLOWED_ORIGINS = "https://muneeb-ahmadch.github.io"
+TURNSTILE_HOSTNAMES = "muneeb-ahmadch.github.io"
+DAILY_LLM = "700"
+HOURLY_LLM = "50"
+PREFIX_DAILY = "60"
+PREFIX_BURST = "10"
+DEV = "0"
+
+# Nothing a visitor types is logged or stored.
+[observability]
+enabled = false

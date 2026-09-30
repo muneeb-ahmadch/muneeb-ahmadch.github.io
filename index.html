@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://challenges.cloudflare.com https://gc.zgo.at; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: https://mademos.goatcounter.com; connect-src 'self' https://*.workers.dev http://localhost:8787 https://mademos.goatcounter.com; frame-src https://challenges.cloudflare.com; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Muneeb Ahmad · AI engineer</title>
+<meta name="description" content="I fix support chatbots that give customers wrong answers. Ask the AI version of me: it answers only from my notes and checks every sentence before you see it.">
+<meta name="theme-color" content="#f6f4ef">
+<meta property="og:title" content="Muneeb Ahmad · I fix support chatbots that give customers wrong answers">
+<meta property="og:description" content="13 measured experiments, three live demos, and an AI version of me that answers only from my notes.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://muneeb-ahmadch.github.io/">
+<meta property="og:image" content="https://muneeb-ahmadch.github.io/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ccircle cx='32' cy='32' r='32' fill='%231c1917'/%3E%3Ctext x='32' y='41' font-family='Arial' font-weight='700' font-size='24' fill='white' text-anchor='middle'%3EMA%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400..700;1,9..144,400..600&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/site.css">
+<script type="module" src="assets/app.js"></script>
+</head>
+<body>
+<a class="skip" href="#ask">Skip to the chat</a>
+
+<header class="nav" id="top">
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="avatar" aria-hidden="true">MA</span>Muneeb Ahmad</a>
+    <nav aria-label="Sections">
+      <a href="#ask">Ask me</a><a href="#experiments">Experiments</a><a href="#demos">Demos</a><a href="#method">How I work</a><a href="#experience">Experience</a><a href="#services">Work with me</a>
+    </nav>
+    <a class="btn small" href="https://www.upwork.com/freelancers/~016a7a38429f479374" rel="noopener" target="_blank" data-track="upwork-nav">Hire me on Upwork</a>
+  </div>
+</header>
+
+<main>
+<section class="hero" aria-labelledby="h1">
+  <div class="wrap">
+    <div>
+      <p class="eyebrow"><span><i class="dot" aria-hidden="true"></i>Available, 30+ hrs/week</span><span>AI engineer</span><span>Lahore · UTC+5</span></p>
+      <h1 id="h1">I fix support chatbots that give customers <em>wrong answers.</em></h1>
+      <p class="lede">This page has one too. It's an AI version of me that answers only from my notes, checks every sentence against them before you see it, and tells you when it doesn't know. Ask it about my work, or try to make it say something that isn't true.</p>
+      <ul class="chips" aria-label="About the chat"><li>AI version of me</li><li>Answers only from my notes</li><li>Says no to everything else</li></ul>
+      <div class="cta">
+        <a class="btn" href="#ask" data-track="hero-ask">Ask the AI version of me</a>
+        <a class="btn ghost" href="https://www.upwork.com/freelancers/~016a7a38429f479374" rel="noopener" target="_blank" data-track="upwork-hero">Message me on Upwork</a>
+      </div>
+    </div>
+    <aside class="proof" aria-label="Measured results">
+      <div class="row"><div class="num">15<span class="arrow">→</span><span class="good">0</span></div><p>trap runs out of 15 answered with made-up facts, before and after one prompt fix.</p></div>
+      <div class="row"><div class="num">8<span class="arrow">→</span><span class="good">1</span></div><p>runs out of 18 where an agent obeyed 1,820 bytes of hostile text, before and after my defence.</p></div>
+      <div class="row"><div class="num">13</div><p>measured experiments on one RAG pipeline, failures kept in, $4.95 total API spend.</p></div>
+      <div class="foot"><span>Every figure links to its write-up</span><a href="#experiments">See all 13 →</a></div>
+    </aside>
+  </div>
+</section>
+
+<section id="ask" class="alt" aria-labelledby="ask-h">
+  <div class="wrap">
+    <p class="kicker">01 · Ask me</p>
+    <h2 id="ask-h">Talk to the AI version of me</h2>
+    <p class="sub">It answers from 80 notes I wrote about my work. Every sentence is checked against the note it cites, and if a check fails you get the note itself, word for word. Nothing you type is stored.</p>
+    <div class="ask-grid">
+      <div class="chat">
+        <div class="chat-head">
+          <span class="avatar" aria-hidden="true">MA</span>
+          <div class="who"><b>Muneeb's AI version</b><span>answers from my notes, not from the internet</span></div>
+          <span class="status" id="status"><i class="dot" aria-hidden="true"></i>ready</span>
+        </div>
+        <div class="msgs" id="msgs" role="log" aria-live="polite" aria-label="Conversation">
+          <div class="msg bot intro"><p>Hi, I'm the AI version of Muneeb. Ask me about my experiments, my demos, how I'd fix your chatbot, what I charge or when I'm available. I only answer from my notes, so if something isn't there, I'll say so.</p></div>
+        </div>
+        <div class="chipbar">
+          <span class="lab">Ask about</span>
+          <div class="chiprow" id="chips-ask"></div>
+          <span class="lab">Try to break it</span>
+          <div class="chiprow" id="chips-break"></div>
+        </div>
+        <div class="ts" id="ts" aria-live="polite"></div>
+        <form class="form" id="ask-form" autocomplete="off">
+          <label class="skip" for="q">Your question</label>
+          <input id="q" name="q" type="text" maxlength="500" placeholder="Ask about my work, method or rates…" enterkeyhint="send" required>
+          <button class="btn accent" type="submit">Ask</button>
+        </form>
+        <p class="note">An AI version of me, not me typing. For anything it can't answer, message the real me on <a href="https://www.upwork.com/freelancers/~016a7a38429f479374" rel="noopener" target="_blank">Upwork</a>.</p>
+      </div>
+      <aside class="trace" aria-label="Behind the scenes">
+        <h3><span aria-hidden="true">⚙</span> Behind the scenes</h3>
+        <p class="lede2">Each question passes these checks. Watch them run.</p>
+        <ol id="trace"><li class="empty">Ask something, or press a chip.</li></ol>
+        <p class="honest">The prompt is not the guardrail. The last check is a verifier that rejects any sentence my notes don't support, the lesson of my experiment 12, where the guard I trusted agreed with the attacker.</p>
+      </aside>
+    </div>
+  </div>
+</section>
+
+<section id="experiments" aria-labelledby="x-h">
+  <div class="wrap">
+    <p class="kicker">02 · Measured, not claimed</p>
+    <h2 id="x-h">Thirteen experiments on one RAG pipeline</h2>
+    <p class="sub">Each one asks a question that can be answered with a number and records the answer it actually got. Five of the thirteen disproved what I set out to prove. Those stayed in.</p>
+    <div class="xgrid">
+      <a class="x wide" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio" rel="noopener" target="_blank"><div class="fig">rag_eval.py</div><p><b>One harness, 2,183 lines.</b> A 50-question golden set, 5 trap questions the corpus cannot answer, an LLM judge with a faithfulness gate, a CI gate that exits non-zero, Langfuse tracing. Every table in every write-up came out of it.</p><span class="go">The repository →</span></a>
+      <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/09-answer-defense" rel="noopener" target="_blank"><div class="top"><span>09 · Answer defense</span></div><div class="fig">15/15 → 0/15</div><p>trap runs hallucinated, before and after a better prompt. Groundedness 66.9% → 95.6%.</p><span class="go">Write-up →</span></a>
+      <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/12-injection" rel="noopener" target="_blank"><div class="top"><span>12 · Prompt injection</span></div><div class="fig">8/18 → 1/18</div><p>runs that obeyed 1,820 bytes of hostile text (0.255% of the corpus), before and after the defence.</p><span class="go">Write-up →</span></a>
+      <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/13-citation-validation" rel="noopener" target="_blank"><div class="top"><span>13 · Citation validation</span></div><div class="fig">0 of 8</div><p>landed attacks caught by forcing citations. Segregating the judge took wrongly punished answers from 4 to 0.</p><span class="go">Write-up →</span></a>
+      <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/01-chunking" rel="noopener" target="_blank"><div class="top"><span>01 · Chunking</span></div><div class="fig">+0.128 → +0.037</div><p>MRR gain from an encoder swap, at n=20 and again at n=50. Below my noise bar, so I withdrew the conclusion.</p><span class="go">Write-up →</span></a>
+      <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/07-generation" rel="noopener" target="_blank"><div class="top"><span>07 · Generation</span></div><div class="fig">$0.002174</div><p>per query, 2.1 s mean latency, measured per request.</p><span class="go">Write-up →</span></a>
+      <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/11-agent-loop" rel="noopener" target="_blank"><div class="top"><span>11 · Agent loop</span></div><div class="fig">4 of 5 wrong</div><p>of my preregistered hypotheses. It fired on 2 of 20 questions at 1.32× cost: ship it behind a trigger.</p><span class="go">Write-up →</span></a>
+      <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/15-langgraph" rel="noopener" target="_blank"><div class="top"><span>15 · LangGraph</span></div><div class="fig">1 paid call lost</div><p>on a kill -9 with durability set to async. Setting it to sync fixes it.</p><span class="go">Write-up →</span></a>
+      <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/14-mcp" rel="noopener" target="_blank"><div class="top"><span>14 · MCP server</span></div><div class="fig">0/3 · 1/3</div><p>compliance and contamination from a poisoned tool description, on a server built to the 2026-07-28 spec.</p><span class="go">Write-up →</span></a>
+      <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/10-abstention-trace" rel="noopener" target="_blank"><div class="top"><span>10 · Tracing refusals</span></div><div class="fig">5/5 · 1/20</div><p>traps abstained and false abstentions; the one false abstention traced to a single chunk in 734.</p><span class="go">Write-up →</span></a>
+      <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/05-heading-chunker" rel="noopener" target="_blank"><div class="top"><span>05 · Heading chunker</span></div><div class="fig">#8 → #67</div><p>the target chunk's rank after heading-aware splitting. Cleaner chunks helped 66 competitors more.</p><span class="go">Write-up →</span></a>
+      <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/06-reranking" rel="noopener" target="_blank"><div class="top"><span>06 · Reranking</span></div><div class="fig">1 of 2</div><p>misses rescued by a cross encoder. The other stayed a miss at every pool size from 5 to 30.</p><span class="go">Write-up →</span></a>
+      <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/08-rag-vs-finetune" rel="noopener" target="_blank"><div class="top"><span>08 · RAG or fine-tune</span></div><div class="fig">$72.47/day</div><p>the saving at which a small-model fine-tune pays back in days. Four scenarios, knowledge versus behaviour.</p><span class="go">Write-up →</span></a>
+      <a class="x" href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio/tree/main/projects/04-answer-quality" rel="noopener" target="_blank"><div class="top"><span>04 · Reading by hand</span></div><div class="fig">1 verdict overturned</div><p>Reading the retrieved chunks turned a coverage problem into a ranking problem.</p><span class="go">Write-up →</span></a>
+    </div>
+  </div>
+</section>
+
+<section id="demos" class="alt" aria-labelledby="d-h">
+  <div class="wrap">
+    <p class="kicker">03 · Built before applying</p>
+    <h2 id="d-h">Three demos you can run</h2>
+    <p class="sub">Each was built from a job post before I applied, with stand-in data, so the client could try the hard part of their own project first.</p>
+    <div class="dgrid">
+      <a class="d" href="https://muneeb-ahmadch.github.io/demos/when-not-to-use-ai/" rel="noopener" target="_blank" data-track="demo-when-not">
+        <div class="shot"><img src="assets/img/demo-when-not-to-use-ai.jpg" alt="Screenshot of the when-not-to-use-AI assistant demo" loading="lazy" width="1200" height="750"></div>
+        <div class="body"><div class="t">An assistant that knows when not to use AI</div><p>Prices go to plain code, policy questions go to the documents with a citation, and anything the documents don't cover gets an honest "I won't guess". Real Python, running in your browser.</p><span class="fact">12/12 edge cases with safeguards · 4/12 without</span><span class="go">Open the demo →</span></div>
+      </a>
+      <a class="d" href="https://muneeb-ahmadch.github.io/demos/inquiry-agent-guardrails/" rel="noopener" target="_blank" data-track="demo-inquiry">
+        <div class="shot"><img src="assets/img/demo-inquiry-agent-guardrails.jpg" alt="Screenshot of the inquiry agent demo" loading="lazy" width="1200" height="750"></div>
+        <div class="body"><div class="t">An inquiry agent that never makes promises</div><p>Answers customers from an approved fact sheet, fills a lead sheet, and routes discounts, refunds and custom quotes to the owner with a draft ready. Press play on a morning of 12 inquiries.</p><span class="fact">approval routing is plain code in front of the model</span><span class="go">Open the demo →</span></div>
+      </a>
+      <a class="d" href="https://muneeb-ahmadch.github.io/demos/booking-race/" rel="noopener" target="_blank" data-track="demo-booking">
+        <div class="shot"><img src="assets/img/demo-booking-race.jpg" alt="Screenshot of the booking race demo" loading="lazy" width="1200" height="750"></div>
+        <div class="body"><div class="t">A booking service that can't double-book</div><p>Two people press Book at the same moment. Switch between the usual first version and mine, and watch the race. In Postgres, the database itself refuses the overlap.</p><span class="fact">5 edge cases checked live</span><span class="go">Open the demo →</span></div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section id="method" aria-labelledby="m-h">
+  <div class="wrap">
+    <p class="kicker">04 · How I work</p>
+    <h2 id="m-h">Measure, fix the biggest cause, measure again</h2>
+    <p class="sub">None of the failures in my repository were found by reading code. They were found by building something that produces a number, then trying to make the number move.</p>
+    <div class="steps">
+      <div class="step"><div class="n">1</div><b>Reproduce</b><p>The failure, with a test set built from your real questions, not toy examples.</p></div>
+      <div class="step"><div class="n">2</div><b>Measure</b><p>Before touching anything: answer accuracy, faithfulness to your documents, cost per query.</p></div>
+      <div class="step"><div class="n">3</div><b>Fix the cause</b><p>Retrieval, chunking, prompts, tool calls or guardrails. The root cause, not the symptom.</p></div>
+      <div class="step"><div class="n">4</div><b>Measure again</b><p>The same tests, the numbers handed over, and tracing so you can see what the model does after I'm gone.</p></div>
+    </div>
+    <div class="callout">
+      <div><span class="q">If your support bot gives wrong answers</span><p>I take 20 to 30 of your real customer questions, count how many come back wrong today, fix the biggest cause, and run the same questions again. The number tells you it's done, not me.</p></div>
+      <a class="btn accent" href="#ask" data-question="How would you fix a support chatbot that gives wrong answers?">Ask how</a>
+    </div>
+  </div>
+</section>
+
+<section id="experience" class="alt" aria-labelledby="e-h">
+  <div class="wrap">
+    <p class="kicker">05 · Experience</p>
+    <h2 id="e-h">Four years of production Python, then AI</h2>
+    <div class="xp">
+      <ol class="tl">
+        <li><span class="when">Sep 2025 – now</span><b>Data Scientist <span>· Leading IT Middle East</span></b><p>Production AI and machine-learning work for energy and financial-services clients: forecasting, classification and reinforcement-learning systems, with MLflow pipelines for experiment tracking and controlled deployment.</p></li>
+        <li><span class="when">Jan 2025 – Aug 2025</span><b>AI Engineer <span>· Comlink Total Solutions</span></b><p>Led engineering and product decisions for an AI image-generation web application, from concept through production release and beta-driven iteration.</p></li>
+        <li><span class="when">May 2024 – Dec 2024</span><b>AI Engineer <span>· Offshore Employee</span></b><p>Contributed to an IBM watsonx enterprise chatbot, built a location-partitioned RAG solution for a legal team, and shipped GenAI and computer-vision services with LangChain, ChromaDB, Flask, Docker and AWS.</p></li>
+        <li><span class="when">Oct 2022 – Apr 2024</span><b>Machine Learning Engineer <span>· Dubizzle Labs</span></b><p>Built a containerized model-serving platform with gRPC and Kafka, turning isolated models into a horizontally scalable production service; deployed computer vision on GCP and Azure.</p></li>
+        <li><span class="when">Sep 2021 – Sep 2022</span><b>Python Developer <span>· ArhamSoft</span></b><p>Built and deployed a FastAPI REST server with 30+ production endpoints, containerized with Docker, with GitHub Actions CI/CD to AWS EC2.</p></li>
+      </ol>
+      <div class="side">
+        <div class="box"><span class="meta">Jul – Sep 2026 · frontend lead</span><h3>A fleet-insurance CRM</h3><p>Xero integration (OAuth, invoice sync, unmatched invoices surfaced instead of guessed), role-based access with route guards, the accident report flow, claim PDFs. Next.js 15, React 19, TypeScript. 50 commits, 211 tests passing.</p></div>
+        <div class="box"><h3>Education</h3><p>BS in Computer Science, National University of Computer and Emerging Sciences (FAST-NUCES).</p></div>
+        <div class="box"><h3>Stack</h3><div class="tags"><span>Python</span><span>FastAPI</span><span>LangGraph</span><span>LangChain</span><span>MCP</span><span>OpenAI API</span><span>Claude API</span><span>Vector databases</span><span>Langfuse</span><span>Docker</span><span>React / Node</span></div></div>
+        <div class="box"><h3>Languages</h3><p>English (fluent), Urdu (native).</p></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="services" aria-labelledby="s-h">
+  <div class="wrap">
+    <p class="kicker">06 · Work with me</p>
+    <h2 id="s-h">Ways to start</h2>
+    <p class="sub">Everything runs through Upwork: messages, calls and contracts. I usually start with a fixed-price diagnostic and a written report, and you keep the report whether or not you hire me for the fix.</p>
+    <div class="sgrid">
+      <div class="s"><div class="price">$30<small> / hour</small></div><h3>Hourly</h3><p>Time tracker on. For a defined job I quote one fixed price, usually in milestones.</p></div>
+      <div class="s"><div class="price">$40<small> / 30 min</small></div><h3>Consultation</h3><p>A 30-minute video call, booked from my Upwork profile, to look at your problem together.</p></div>
+      <div class="s"><div class="price">from $95</div><h3>Reliability diagnostic</h3><p>A written diagnostic of your LLM, RAG or agent app.</p>
+        <ul class="tiers"><li><b>$95</b>One failure reproduced and explained, 1–2 pages, 2 days.</li><li><b>$240</b>Up to 8 failures across the request path, a ranked 6–10 page report, 30-minute call, 3 days.</li><li><b>$480</b>Plus an evaluation set of 25–50 real questions, a scoring script, and the top fix re-measured, 7 days.</li></ul></div>
+      <div class="s"><div class="price">from $120</div><h3>Prompt-injection test</h3><p>Your RAG or agent tested against your own content, with the numbers.</p>
+        <ul class="tiers"><li><b>$120</b>A threat model and one working indirect injection, 3 days.</li><li><b>$320</b>6+ payloads over multiple runs, a measured obedience rate, your guardrail audited, 5 days.</li><li><b>$640</b>Plus the defence implemented and the suite re-run, before and after, 10 days.</li></ul></div>
+    </div>
+    <div class="avail"><span><b>More than 30 hrs/week</b>, open to contract-to-hire</span><span><b>Lahore, UTC+5</b>, messages answered every working day</span><a class="btn" href="https://www.upwork.com/freelancers/~016a7a38429f479374" rel="noopener" target="_blank" data-track="upwork-services">Message me on Upwork</a></div>
+    <p class="no">What I don't take: no-code agent builders (GoHighLevel, n8n, Zapier, Voiceflow), voice-AI telephony, mobile-first apps. I'd be learning on your time.</p>
+  </div>
+</section>
+
+<section id="developer" class="alt" aria-labelledby="dev-h">
+  <div class="wrap">
+    <p class="kicker">07 · For your developer</p>
+    <h2 id="dev-h">How this chat is built, and how it was tested</h2>
+    <p class="sub">A static page, a free Cloudflare Worker, an open 8B model and $0 a month. The guardrails are code you can read.</p>
+    <details class="dev" open>
+      <summary>The layers, in order</summary>
+      <div class="devbody">
+        <svg class="arch" viewBox="0 0 1040 250" role="img" aria-labelledby="arch-t arch-d">
+          <title id="arch-t">Request path of the chat</title>
+          <desc id="arch-d">Browser to Cloudflare Worker: bot check, rules, topic gate, retrieval, quota, injection classifier, writer model, verifier; failures end in a fixed reply or verbatim notes.</desc>
+          <defs><marker id="ah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0L10,5L0,10z" fill="#8a847e"/></marker></defs>
+          <g font-family="Inter,system-ui,sans-serif" font-size="13">
+            <rect x="10" y="20" width="150" height="70" rx="12" fill="#fff" stroke="#e7e5e4"/><text x="85" y="50" text-anchor="middle" font-weight="600" fill="#1c1917">Your browser</text><text x="85" y="70" text-anchor="middle" fill="#57534e">rules · notes search</text>
+            <rect x="200" y="10" width="830" height="95" rx="14" fill="#e3f1ee" stroke="#cbe5df"/><text x="215" y="30" fill="#0b5b55" font-family="JetBrains Mono,monospace" font-size="11">CLOUDFLARE WORKER (free tier)</text>
+            <g fill="#fff" stroke="#cbe5df">
+              <rect x="215" y="40" width="88" height="52" rx="9"/><rect x="311" y="40" width="88" height="52" rx="9"/><rect x="407" y="40" width="88" height="52" rx="9"/><rect x="503" y="40" width="88" height="52" rx="9"/><rect x="599" y="40" width="88" height="52" rx="9"/><rect x="695" y="40" width="98" height="52" rx="9"/><rect x="801" y="40" width="98" height="52" rx="9"/><rect x="907" y="40" width="112" height="52" rx="9" stroke="#15803d" stroke-width="2"/>
+            </g>
+            <g text-anchor="middle" fill="#1c1917" font-size="12">
+              <text x="259" y="62">Bot check</text><text x="259" y="80" fill="#57534e" font-size="11">Turnstile</text>
+              <text x="355" y="62">Rules</text><text x="355" y="80" fill="#57534e" font-size="11">deterministic</text>
+              <text x="451" y="62">Topic gate</text><text x="451" y="80" fill="#57534e" font-size="11">bge-small kNN</text>
+              <text x="547" y="62">Retrieve</text><text x="547" y="80" fill="#57534e" font-size="11">BM25 + cosine</text>
+              <text x="643" y="62">Quota</text><text x="643" y="80" fill="#57534e" font-size="11">Durable Object</text>
+              <text x="744" y="62">Injection</text><text x="744" y="80" fill="#57534e" font-size="11">Prompt Guard 2</text>
+              <text x="850" y="62">Writer</text><text x="850" y="80" fill="#57534e" font-size="11">Llama 3.1 8B</text>
+              <text x="963" y="62" font-weight="600" fill="#15803d">Verifier</text><text x="963" y="80" fill="#57534e" font-size="11">every sentence</text>
+            </g>
+            <path d="M160,55 L198,55" stroke="#8a847e" stroke-width="1.5" marker-end="url(#ah)"/>
+            <rect x="200" y="150" width="400" height="80" rx="14" fill="#fff5e0" stroke="#f3dfb5"/><text x="400" y="182" text-anchor="middle" font-weight="600" fill="#1c1917">Any check says no</text><text x="400" y="204" text-anchor="middle" fill="#57534e">a fixed reply, or my notes verbatim</text>
+            <rect x="630" y="150" width="400" height="80" rx="14" fill="#e8f5ec" stroke="#bfe3cb"/><text x="830" y="182" text-anchor="middle" font-weight="600" fill="#1c1917">Every sentence supported</text><text x="830" y="204" text-anchor="middle" fill="#57534e">the written answer, with its sources</text>
+            <path d="M451,95 L451,148" stroke="#8a847e" stroke-width="1.5" stroke-dasharray="4 4" marker-end="url(#ah)"/><path d="M963,95 L963,148" stroke="#8a847e" stroke-width="1.5" marker-end="url(#ah)"/>
+          </g>
+        </svg>
+        <ol>
+          <li><b>Bot check.</b> One single-use Cloudflare Turnstile token per question, bound to the question's hash, so a token can't be replayed or reused for another question.</li>
+          <li><b>Rules.</b> Length, encoded payloads, other languages, contact requests, role changes, personal and off-topic questions, all deterministic.</li>
+          <li><b>Topic gate.</b> The question is embedded with bge-small-en-v1.5 and compared with labelled example questions, and with the notes themselves: too far from both means "not in my notes".</li>
+          <li><b>Retrieval.</b> BM25 and cosine similarity over 80 notes, fused by rank. The Worker retrieves for itself; nothing the page sends can choose the notes.</li>
+          <li><b>Quota.</b> A Durable Object counts turns that reach the model, per day, per hour and per network. If it's unavailable, the chat answers from notes only.</li>
+          <li><b>Injection classifier.</b> Llama Prompt Guard 2 (86M) on Groq's free tier scores each question.</li>
+          <li><b>Writer.</b> Llama 3.1 8B at temperature 0 sees only the retrieved notes inside per-request delimiters, and returns sentences that each cite a note and quote it. Earlier turns are reused only if they carry the Worker's signature.</li>
+          <li><b>Verifier.</b> Every number and every name in a sentence must appear in the note it cites, its content words must come from that note, a quoted phrase can't flip negation, and no URL, email, phone number or persona break is allowed. Otherwise: my notes, verbatim.</li>
+        </ol>
+      </div>
+    </details>
+    <details class="dev">
+      <summary>How it was tested</summary>
+      <div class="devbody">
+        <div class="tablewrap"><table class="t" id="results">
+          <thead><tr><th>Test</th><th>What it measures</th><th>Result</th></tr></thead>
+          <tbody>
+            <tr><td>Verifier unit tests</td><td>Rejects an invented number, a misattributed name, a negated quote, an email or URL, a persona break; keeps a grounded answer</td><td class="n" id="r-unit">17 / 17 pass</td></tr>
+            <tr><td>Topic gate, fresh test set</td><td>104 questions written after tuning ended, rules and nearest-neighbour gate alone, before the model's own check</td><td class="n" id="r-gate">85.6% correct · 70% of off-topic declined</td></tr>
+            <tr><td>Red team, end to end</td><td>Jailbreaks, prompt leaks, encodings, other languages, contact extraction, off-topic, fabrication bait</td><td class="n pending" id="r-red">running before launch</td></tr>
+            <tr><td>Groundedness</td><td>Answerable and unanswerable questions: numbers found in the cited notes, "not in my notes" when it isn't there</td><td class="n pending" id="r-ground">running before launch</td></tr>
+          </tbody>
+        </table></div>
+        <p>The gate alone lets through about one off-topic question in three on a fresh set, which is why it isn't the last line. What gets through reaches a model that only sees my notes and a verifier that only passes sentences those notes support. The full reports and the code are in <a href="https://github.com/muneeb-ahmadch/muneeb-ahmadch.github.io" rel="noopener" target="_blank">this site's repository</a>.</p>
+      </div>
+    </details>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="#top"><span class="avatar" aria-hidden="true">MA</span>Muneeb Ahmad · AI engineer, Lahore</a>
+    <div class="links">
+      <a href="https://www.upwork.com/freelancers/~016a7a38429f479374" rel="noopener" target="_blank" data-track="upwork-footer">Message me on Upwork</a>
+      <a href="https://github.com/muneeb-ahmadch/llm-engineering-portfolio" rel="noopener" target="_blank">Evaluation harness on GitHub</a>
+      <a href="https://github.com/muneeb-ahmadch/muneeb-ahmadch.github.io" rel="noopener" target="_blank">This site's source</a>
+    </div>
+    <p class="why">There's no email or phone number on this page on purpose: Upwork asks that we talk on the platform before a contract, and I keep to that.</p>
+  </div>
+</footer>
+<script data-goatcounter="https://mademos.goatcounter.com/count" async src="https://gc.zgo.at/count.js"></script>
+</body>
+</html>

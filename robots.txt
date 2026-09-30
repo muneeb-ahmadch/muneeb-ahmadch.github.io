@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://muneeb-ahmadch.github.io/sitemap.xml
