@@ -68,8 +68,15 @@ test('a persona break or setup leak is rejected', () => {
 });
 
 test('a citation to a note that was not retrieved is rejected', () => {
-  const r = verifyAnswer({ sentences: [{ text: 'My hourly rate on Upwork is $30.', source: 'svc-injection', quote: 'My hourly rate on Upwork is $30' }] }, top);
+  const r = verifyAnswer({ sentences: [{ text: 'A threat model and one working indirect injection costs $120.', source: 'svc-injection', quote: 'a threat model and one working indirect injection' }] }, top);
   assert.equal(r.ok, false);
+  assert.ok(r.hard.some(h => h.includes('unknown-source')));
+});
+
+test('a wrong source id is resolved only through a quote found in exactly one retrieved note', () => {
+  const r = verifyAnswer({ sentences: [{ text: 'My hourly rate on Upwork is $30.', source: '7b820e4d', quote: 'My hourly rate on Upwork is $30' }] }, top);
+  assert.equal(r.ok, true, JSON.stringify(r));
+  assert.equal(r.kept[0].source, 'svc-rate');
 });
 
 test('too long and not-JSON are rejected; empty means "not in my notes"', () => {

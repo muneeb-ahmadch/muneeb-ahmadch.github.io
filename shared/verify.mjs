@@ -47,9 +47,18 @@ export function verifyAnswer(out, retrieved) {
   for (const p of PERSONA_BREAKS) if (nt.includes(p)) report.hard.push('persona:' + p);
   for (const re of CONTACT) if (re.test(fullText)) report.hard.push('contact-or-url');
 
+  // The source is the cited note id; tolerate "id: x" or "id=x", else the one note that contains the quote.
+  const resolve = s => {
+    const raw = String(s?.source ?? '').trim();
+    if (byId.has(raw)) return byId.get(raw);
+    const hit = retrieved.find(c => raw.includes(c.id));
+    if (hit) return hit;
+    const scored = retrieved.map(c => [quoteSupport(String(s?.quote ?? ''), c.text), c]).filter(([q]) => q >= 0.9);
+    return scored.length === 1 ? scored[0][1] : null;
+  };
   for (const [i, s] of sents.entries()) {
     const text = String(s?.text ?? '').trim();
-    const src = byId.get(String(s?.source ?? ''));
+    const src = resolve(s);
     const tag = `s${i + 1}`;
     report.checks.sentences[1]++;
     if (!text) { report.soft.push(tag + ':empty'); continue; }
@@ -90,11 +99,7 @@ export function verifyAnswer(out, retrieved) {
 }
 
 // The fallback when the model is unavailable or its answer fails: my notes, verbatim.
-export function extractive(retrieved, { max = 2 } = {}) {
-  const [a, b] = retrieved;
-  if (!a) return [];
-  const out = [{ text: a.text, source: a.id }];
-  if (max > 1 && b && b.section !== a.section && (b.bm25 ?? 0) >= 0.8 * (a.bm25 ?? 0) && wordCount(a.text + b.text) <= 160)
-    out.push({ text: b.text, source: b.id });
-  return out;
+export function extractive(retrieved) {
+  const [a] = retrieved;
+  return a ? [{ text: a.text, source: a.id }] : [];
 }

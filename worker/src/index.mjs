@@ -129,9 +129,11 @@ async function handleAsk(req, env, emit) {
   emit({ t: 'stage', stage: 'quota', status: 'run' });
   let quota;
   try {
+    // `wrangler dev --remote` cannot run Durable Objects; dev runs skip the counter, production never does.
+    if (env.DEV === '1' && env.DEV_SKIP_QUOTA === '1') throw Object.assign(new Error('skip'), { skip: true });
     const stub = env.QUOTA.get(env.QUOTA.idFromName('global'));
     quota = await withTimeout(stub.consume(ipPrefix(ip), { daily: +env.DAILY_LLM, hourly: +env.HOURLY_LLM, prefixDaily: +env.PREFIX_DAILY, prefixBurst: +env.PREFIX_BURST }), 1500, 'quota');
-  } catch { quota = { ok: false, reason: 'unavailable' }; }
+  } catch (e) { quota = e?.skip ? { ok: true, reason: 'dev-skip' } : { ok: false, reason: 'unavailable' }; }
   emit({ t: 'stage', stage: 'quota', status: quota.ok ? 'ok' : 'limit', detail: quota.reason });
   if (!quota.ok) return final('quota', { sentences: extractive(top), reason: quota.reason });
 
@@ -151,7 +153,8 @@ async function handleAsk(req, env, emit) {
   for (let attempt = 0; attempt < 2 && !out; attempt++) {
     try {
       const r = await withTimeout(env.AI.run(MODEL, { messages, max_tokens: 380, temperature: 0 }), 20000, 'write');
-      out = parseModelJson(r?.response ?? r);
+      const text = typeof r?.response === 'string' ? r.response : r?.choices?.[0]?.message?.content ?? r?.response ?? r;
+      out = parseModelJson(text);
     } catch { out = null; }
   }
   emit({ t: 'stage', stage: 'write', status: out ? 'ok' : 'fail' });
@@ -164,7 +167,7 @@ async function handleAsk(req, env, emit) {
 
   // 10. The verifier: every sentence must be supported by the note it cites.
   const rep = verifyAnswer(out, top);
-  emit({ t: 'stage', stage: 'verify', status: rep.ok ? 'ok' : rep.empty ? 'empty' : 'fail', checks: rep.checks, dropped: rep.soft.length, hard: rep.hard.length });
+  emit({ t: 'stage', stage: 'verify', status: rep.ok ? 'ok' : rep.empty ? 'empty' : 'fail', checks: rep.checks, dropped: rep.soft.length, hard: rep.hard.length, ...(env.DEV === '1' ? { debug: { out, hard: rep.hard, soft: rep.soft } } : {}) });
   if (rep.empty) return final('unknown', { reply: REPLIES.unknown, suggest: top.slice(0, 3).map(c => c.title) });
   if (!rep.ok) return final('extractive', { sentences: extractive(top), reason: rep.hard.length ? 'verifier-rejected' : 'unsupported' , verifier: { hard: rep.hard.slice(0, 5), soft: rep.soft.slice(0, 5) } });
   return final('llm', { sentences: rep.kept, checks: rep.checks, dropped: rep.soft.length });
