@@ -13,7 +13,7 @@ I'm available for more than 30 hours a week and open to contract-to-hire. I'm in
 ## svc-consultation | Consultation
 ask: Can we book a call? | Do you offer a consultation?
 url: https://www.upwork.com/freelancers/~016a7a38429f479374
-You can book a 30-minute video consultation with me for $40, from my Upwork profile.
+You can book a 30-minute video consultation with me for $20, from my Upwork profile.
 
 ## svc-diagnostic | Reliability diagnostic (Project Catalog)
 ask: How much is a diagnostic? | What does the reliability diagnostic include?

@@ -58,4 +58,4 @@ I work alone. The person you talk to on Upwork is the person who does the work.
 Yes. I'm open to contract-to-hire and available for more than 30 hours a week.
 
 ## faq-reach | How do I contact you?
-Message me on Upwork, or book the $40, 30-minute consultation from my Upwork profile. There's no email here on purpose.
+Message me on Upwork, or book the $20, 30-minute consultation from my Upwork profile. There's no email here on purpose.
